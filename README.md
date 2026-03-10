@@ -18,4 +18,4 @@ Hi, I'm Daniel Idowu I'm a Front-End Developer passionate about creating clean a
 You can view my portfolio live here: https://daniel001-beep.github.io/my-portfolio/
 
 ## 📬 Contact
-Feel free to reach out to me at idowuisdaniel1@gmail.com or connect with me on 
+Feel free to reach out to me at idowuisdaniel1@gmail.com or connect with me on https://www.linkedin.com/in/daniel-idowu-889482340?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
