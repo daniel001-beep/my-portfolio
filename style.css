@@ -1,18 +1,20 @@
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-  scroll-behavior: smooth;
 }
 
 body {
   color: #e9ecef;
   background: linear-gradient(135deg, #1a1e24 0%, #2d3436 100%);
   min-height: 100vh;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
 }
 
-/* Header & Navbar - Dark glass effect */
+/* Header & Navbar */
 header {
   position: fixed;
   top: 0;
@@ -44,9 +46,6 @@ header {
   font-weight: 500;
   margin-left: 35px;
   transition: 0.3s;
-  opacity: 0;
-  animation: slideTop 0.5s ease forwards;
-  animation-delay: calc(0.2s * var(--i));
   position: relative;
 }
 
@@ -112,15 +111,10 @@ header {
   font-size: 28px;
   font-weight: 600;
   color: #e9ecef;
-  opacity: 0;
-  animation: slideBottom 1s ease forwards;
-  animation-delay: 0.7s;
 }
 
 .home-content h3:nth-of-type(2) {
   margin-bottom: 20px;
-  animation: slideTop 1s ease forwards;
-  animation-delay: 0.7s;
 }
 
 .home-content h3 span {
@@ -134,18 +128,12 @@ header {
   font-weight: 700;
   margin: 10px 0;
   color: #e9ecef;
-  opacity: 0;
-  animation: slideRight 1s ease forwards;
-  animation-delay: 1s;
 }
 
 .home-content p {
   font-size: 16px;
   line-height: 1.6;
   color: #adb5bd;
-  opacity: 0;
-  animation: slideLeft 1s ease forwards;
-  animation-delay: 1s;
   margin-bottom: 20px;
 }
 
@@ -169,9 +157,6 @@ header {
   color: #00b4d8;
   text-decoration: none;
   transition: 0.3s;
-  opacity: 0;
-  animation: slideLeft 1s ease forwards;
-  animation-delay: calc(0.2s * var(--i));
 }
 
 .home-sci a:hover,
@@ -197,9 +182,6 @@ header {
   border: none;
   cursor: pointer;
   transition: 0.3s;
-  opacity: 0;
-  animation: slideTop 1s ease forwards;
-  animation-delay: 2s;
   border: 1px solid transparent;
 }
 
@@ -211,7 +193,7 @@ header {
   transform: translateY(-2px);
 }
 
-/* About Section - CENTERED */
+/* About Section */
 .about {
   display: flex;
   flex-direction: column;
@@ -465,26 +447,26 @@ header {
   height: 100%;
   width: 0;
   border-radius: 3px;
-  animation: fillSkillBar 1.5s ease-in-out forwards;
+  transition: width 1.5s ease-in-out;
 }
 
 .Technical-bars .bar.html .progress-line span {
-  --skill-percentage: 90%;
+  width: var(--skill-percentage, 90%);
   background: #e17055;
 }
 
 .Technical-bars .bar.css .progress-line span {
-  --skill-percentage: 85%;
+  width: var(--skill-percentage, 85%);
   background: #00b4d8;
 }
 
 .Technical-bars .bar.javascript .progress-line span {
-  --skill-percentage: 80%;
+  width: var(--skill-percentage, 80%);
   background: #fdcb6e;
 }
 
 .Technical-bars .bar.react .progress-line span {
-  --skill-percentage: 75%;
+  width: var(--skill-percentage, 75%);
   background: #00cec9;
 }
 
@@ -501,19 +483,9 @@ header {
   width: 120px;
   height: 120px;
   margin: 0 auto;
-}
-
-.radial-bars::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
   background: rgba(0, 0, 0, 0.3);
-  animation: fillRadialBar 1.5s ease-out 0.5s forwards;
-  animation-fill-mode: forwards;
+  border-radius: 50%;
+  transition: background 1.5s ease-out;
 }
 
 .radial-bars::after {
@@ -628,7 +600,7 @@ header {
   color: #1a1e24;
 }
 
-/* Certificates Section - MATCHING SKILLS SECTION STYLE */
+/* Certificates Section */
 .certificates-section {
   padding: 100px 10% 50px;
 }
@@ -1172,35 +1144,10 @@ header {
   transform: translateY(-3px);
 }
 
-/* Animations */
-@keyframes fillSkillBar {
-  0% { width: 0; }
-  100% { width: var(--skill-percentage, 90%); }
-}
-
-@keyframes fillRadialBar {
-  0% { background: rgba(0, 0, 0, 0.3); }
-  100% { background: conic-gradient(#00b4d8 calc(var(--val) * 3.6deg), rgba(0, 0, 0, 0.3) 0deg); }
-}
-
-@keyframes slideRight {
-  0% { transform: translateX(-100px); opacity: 0; }
-  100% { transform: translateX(0px); opacity: 1; }
-}
-
-@keyframes slideLeft {
-  0% { transform: translateX(100px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes slideTop {
-  0% { transform: translateY(100px); opacity: 0; }
-  100% { transform: translateY(0px); opacity: 1; }
-}
-
-@keyframes slideBottom {
-  0% { transform: translateY(-100px); opacity: 0; }
-  100% { transform: translateY(0px); opacity: 1; }
+/* Animations - Optimized */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /* Responsive Design */
