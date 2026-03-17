@@ -1,34 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Idowu Daniel - Portfolio</title>
-    <meta name="description"
-        content="Portfolio of Idowu Daniel, a Full Stack Developer with expertise in React, JavaScript, and responsive web design. Over 5 months of experience creating beautiful websites.">
-    <meta name="keywords" content="web developer, frontend developer, react developer, portfolio, responsive design">
+    <meta name="description" content="Portfolio of Idowu Daniel - Frontend Developer specializing in React and responsive web design">
+    <meta name="keywords" content="web developer, frontend developer, react developer, portfolio">
     <meta name="author" content="Idowu Daniel">
-    <meta property="og:title" content="Idowu Daniel - Full Stack Developer">
-    <meta property="og:description" content="Portfolio showcasing web development projects and skills">
-    <meta property="og:image" content="https://yourdomain.com/7.jpeg">
-    <meta property="og:url" content="https://yourdomain.com">
-    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="main.js" as="script">
+    
+    <!-- Critical CSS -->
     <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Defer non-critical CSS -->
+    <link rel="preload" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"></noscript>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+    
+    <!-- Preconnect for faster CDN loading -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <header class="header">
-
         <nav class="navbar">
             <a href="#home" style="--i:1;" class="active">Home</a>
             <a href="#about" style="--i:2;">About</a>
             <a href="#services" style="--i:3;">Services</a>
             <a href="#skills" style="--i:4;">Skills</a>
+            <a href="#projects" style="--i:5;">Projects</a>
+            <a href="#certificates" style="--i:6;">Certificates</a>
             <a href="#contact" style="--i:7;">Contact</a>
             <div class="menu-toggle" id="mobile-menu">
                 <span class="bar"></span>
@@ -47,23 +57,17 @@
                 <br>expertise is to create good and responsive websites.
             </p>
             <div class="home-sci">
-                <a href="https://www.facebook.com/profile.php?id=61571380449874&mibextid=ZbWKwL" style="--i:7;"
-                    target="_blank" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
-                <a href="https://www.instagram.com/danielidowu18?igsh=dXYzcHU3Y281dXls" style="--i:8;" target="_blank"
-                    aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
-                <a href="https://wa.me/2347011755321?text=yourmessage" style="--i:9;" target="_blank"
-                    aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
-                <a href="https://www.tiktok.com/@danieid4?_t=ZS-90a4BczKc9H&_r=1" style="--i:10;" target="_blank"
-                    aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
-
+                <a href="https://www.facebook.com/profile.php?id=61571380449874&mibextid=ZbWKwL" style="--i:7;" target="_blank" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
+                <a href="https://www.instagram.com/danielidowu18?igsh=dXYzcHU3Y281dXls" style="--i:8;" target="_blank" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+                <a href="https://wa.me/2347011755321?text=yourmessage" style="--i:9;" target="_blank" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
+                <a href="https://www.tiktok.com/@danieid4?_t=ZS-90a4BczKc9H&_r=1" style="--i:10;" target="_blank" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
             </div>
             <a href="#about" class="btn-box">More About Me</a>
-            <a href="Daniel Resume.docx" class="btn-box" download>Download CV </a>
+            <a href="Daniel_Idowu_Resume_ATS.docx" class="btn-box" download>Download CV</a>
         </div>
     </section>
 
     <section class="about" id="about">
-        
         <div class="about-text">
             <h2>About <span>Me</span></h2>
             <h4>Front-End Developer</h4>
@@ -82,7 +86,6 @@
                     <h3>3+</h3>
                     <p>Projects Completed</p>
                 </div>
-                
             </div>
             <a href="#contact" class="btn-box">Contact Me</a>
         </div>
@@ -197,8 +200,8 @@
                         <span>CSS</span>
                         <span>JavaScript</span>
                     </div>
-                    <a href="https://mypro502.netlify.app/" target="_blank" class="project-link">View Project</a>
-                    <a href="https://github.com/daniel001-beep/Ecommerce-Website" class="project-link">View Code</a>
+                    <a href="https://mypro502.netlify.app/" target="_blank" rel="noopener" class="project-link">View Project</a>
+                    <a href="https://github.com/daniel001-beep/Ecommerce-Website" target="_blank" rel="noopener" class="project-link">View Code</a>
                 </div>
             </div>
             <div class="project-card">
@@ -210,72 +213,71 @@
                         <span>CSS</span>
                         <span>JavaScript</span>
                     </div>
-                    <a href="https://github.com/daniel001-beep/my-portfolio" target="_blank" class="project-link">View Code</a>
+                    <a href="https://github.com/daniel001-beep/my-portfolio" target="_blank" rel="noopener" class="project-link">View Code</a>
                 </div>
             </div>
         </div>
     </section>
-<section class="certificates-section" id="certificates">
-    <h1 class="sub-title">My <span>Certificates</span></h1>
-    <div class="certificates-wrapper">
-        <div class="certificates-container">
-            <h2 class="certificates-heading">Frontend Development</h2>
-            <div class="certificates-grid">
-                <!-- Certificate 1 -->
-                <div class="certificate-item">
-                    <div class="certificate-icon">
-                        <i class="fas fa-code"></i>
+
+    <section class="certificates-section" id="certificates">
+        <h1 class="sub-title">My <span>Certificates</span></h1>
+        <div class="certificates-wrapper">
+            <div class="certificates-container">
+                <h2 class="certificates-heading">Frontend Development</h2>
+                <div class="certificates-grid">
+                    <div class="certificate-item">
+                        <div class="certificate-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="certificate-content">
+                            <h3>Front-End Development</h3>
+                            <div class="issuer">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>PercorsoTech</span>
+                            </div>
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span>December 2025</span>
+                            </div>
+                            <p>Complete web development certification covering HTML, CSS, JavaScript, React.js</p>
+                            <div class="certificate-links">
+                                <a href="viewer.html?id=3" class="certificate-link">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <a href="https://PercorsoTech.com/certificate" class="certificate-link secondary" target="_blank" rel="noopener">
+                                    <i class="fas fa-external-link-alt"></i> Verify
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="certificate-content">
-                        <h3>Front-End Development</h3>
-                        <div class="issuer">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span>PercorsoTech</span>
+                </div>
+            </div>
+            
+            <div class="certificates-container">
+                <h2 class="certificates-heading">Additional Skills</h2>
+                <div class="certificates-grid">
+                    <div class="certificate-item">
+                        <div class="certificate-icon">
+                            <i class="fas fa-laptop-code"></i>
                         </div>
-                        <div class="date">
-                            <i class="far fa-calendar"></i>
-                            <span>December 2025</span>
-                        </div>
-                        <p>Complete web development certification covering HTML, CSS, JavaScript, React.js</p>
-                        <div class="certificate-links">
-                            <a href="certificate.png" class="certificate-link">
-                                <i class="fas fa-eye"></i> View
-                            </a>
-                            <a href="https://PercorsoTech.com/certificate" class="certificate-link secondary" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Verify
-                            </a>
+                        <div class="certificate-content">
+                            <h3>Coming Soon</h3>
+                            <div class="issuer">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>In Progress</span>
+                            </div>
+                            <div class="date">
+                                <i class="far fa-calendar"></i>
+                                <span>2026</span>
+                            </div>
+                            <p>More certificates will be added as I complete new courses.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Add more certificate containers for different categories if needed -->
-        <div class="certificates-container">
-            <h2 class="certificates-heading">Additional Skills</h2>
-            <div class="certificates-grid">
-                <!-- You can add more certificates here -->
-                <div class="certificate-item">
-                    <div class="certificate-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <div class="certificate-content">
-                        <h3>Coming Soon</h3>
-                        <div class="issuer">
-                            <i class="fas fa-graduation-cap"></i>
-                            <span>In Progress</span>
-                        </div>
-                        <div class="date">
-                            <i class="far fa-calendar"></i>
-                            <span>2026</span>
-                        </div>
-                        <p>More certificates will be added as I complete new courses.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
+
     <section class="contact-section" id="contact">
         <h1 class="sub-title">Contact <span>Me</span></h1>
         <div class="contact-container">
@@ -304,42 +306,28 @@
             </div>
             <form action="https://api.web3forms.com/submit" method="POST" class="contact-form" id="contactForm">
                 <input type="hidden" name="access_key" value="b403125a-6b32-47b4-9028-3954d4ebc00f">
-                <input type="hidden" name="subject" value="New Portfolio Contact - {{name}}">
+                <input type="hidden" name="subject" value="New Portfolio Contact">
                 <input type="hidden" name="from_name" value="Portfolio Contact Form">
-                <input type="hidden" name="redirect" value="https://web3forms.com/success">
-
-                <!-- Optional: Auto Reply Message -->
-                <input type="hidden" name="autoreply" value="Thank you for contacting me! I'll get back to you soon.">
-
-                <!-- Optional: CC yourself -->
-                <input type="hidden" name="cc_me" value="true">
-
+                
                 <input type="text" name="name" placeholder="Your Full Name" required>
                 <input type="email" name="email" placeholder="Your Email Address" required>
                 <input type="text" name="phone" placeholder="Your Phone Number (Optional)">
                 <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-
-                <!-- Honeypot for spam -->
-                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-
+                
+                <input type="checkbox" name="botcheck" style="display: none;">
+                
                 <button type="submit" class="btn-box">
                     <span class="btn-text">Send Message</span>
                     <span class="loading" style="display: none;">Sending...</span>
                 </button>
-
+                
                 <div id="result" class="result-message" style="margin-top: 15px; display: none;"></div>
             </form>
         </div>
     </section>
 
-    
-    <!-- Optional: Cloudflare Turnstile Script -->
+    <!-- Deferred scripts -->
+    <script src="main.js" defer></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <script src="main.js"></script>
 </body>
-
-
-</html>
-
+    </html>
