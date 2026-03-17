@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate Viewer </title>
+    <title>Certificate Viewer - Idowu Daniel</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style">
+    
+    <!-- Critical CSS -->
     <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Defer non-critical CSS -->
+    <link rel="preload" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"></noscript>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
 </head>
 <body>
     <div class="certificate-viewer-page">
@@ -16,160 +26,102 @@
             </a>
 
             <div class="certificate-viewer" id="certificateViewer">
-                <!-- Certificate content will be loaded here by JavaScript -->
+                <!-- Certificate content will be loaded here -->
             </div>
 
             <div class="certificate-navigation">
                 <a href="#" class="nav-btn prev-btn" id="prevBtn">
-                    <i class="fas fa-chevron-left"></i> Previous Certificate
+                    <i class="fas fa-chevron-left"></i> Previous
                 </a>
                 <a href="#" class="nav-btn next-btn" id="nextBtn">
-                    Next Certificate <i class="fas fa-chevron-right"></i>
+                    Next <i class="fas fa-chevron-right"></i>
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // Certificate Data
-        const certificates = [
-            
-            
-            {
-                id: 3,
-                title: "Front-End Development",
-                issuer: "PercorsoTech",
-                date: "December 17th 2025",
-                image: "images/certificate.png",
-                pdfUrl: "#",
-                verifyUrl: "https://PercorsoTech.com/certificate",
-                skills: [ "HTML5", "CSS3", "JavaScript", "React.js", ],
-                description: "Comprehensive front-end web development certification covering both frontend and technologies. This certification required building multiple projects including a complete web application ."
-            }
-        ];
+        // Certificate Data (minified)
+        const certificates = [{
+            id: 3,
+            title: "Front-End Development",
+            issuer: "PercorsoTech",
+            date: "December 17th 2025",
+            image: "images/certificate.png",
+            pdfUrl: "#",
+            verifyUrl: "https://PercorsoTech.com/certificate",
+            skills: ["HTML5", "CSS3", "JavaScript", "React.js"],
+            description: "Comprehensive front-end web development certification covering HTML, CSS, JavaScript, and React.js."
+        }];
 
-        // Get certificate ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentId = parseInt(urlParams.get('id')) || 1;
-        
-        // Find current certificate
-        let currentIndex = certificates.findIndex(cert => cert.id === currentId);
-        if (currentIndex === -1) currentIndex = 0;
+        // Initialize viewer
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentId = parseInt(urlParams.get('id')) || 3;
+            let currentIndex = certificates.findIndex(cert => cert.id === currentId);
+            if (currentIndex === -1) currentIndex = 0;
 
-        // Load certificate
-        function loadCertificate(index) {
-            const cert = certificates[index];
             const viewer = document.getElementById('certificateViewer');
-            
-            viewer.innerHTML = `
-                <div class="certificate-header">
-                    <h1>${cert.title}</h1>
-                    <h2>${cert.issuer}</h2>
-                    <div class="certificate-meta">
-                        <div class="meta-item">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Issued: ${cert.date}</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="fas fa-id-card"></i>
-                            <span>Certificate ID: CERT-${cert.id.toString().padStart(3, '0')}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="certificate-image-container">
-                    <img src="${cert.image}" alt="${cert.title}" class="certificate-image">
-                </div>
-                
-                <div class="certificate-details">
-                    <h3>Certificate Details</h3>
-                    <p>${cert.description}</p>
-                    
-                    <h3 style="margin-top: 30px;">Skills Covered</h3>
-                    <div class="skills-list">
-                        ${cert.skills.map(skill => `<div class="skill-item">${skill}</div>`).join('')}
-                    </div>
-                </div>
-                
-                <div class="certificate-actions-full">
-                    ${cert.pdfUrl !== '#' ? 
-                        `<a href="${cert.pdfUrl}" download class="secondary">
-                            <i class="fas fa-download"></i> Download PDF
-                        </a>` : ''
-                    }
-                    ${cert.verifyUrl !== '#' ? 
-                        `<a href="${cert.verifyUrl}" target="_blank" class="secondary">
-                            <i class="fas fa-external-link-alt"></i> Verify Online
-                        </a>` : ''
-                    }
-                    <a href="index.html#contact" class="secondary">
-                        <i class="fas fa-envelope"></i> Contact Me
-                    </a>
-                </div>
-            `;
-            
-            // Update URL without page reload
-            history.replaceState(null, '', `?id=${cert.id}`);
-            
-            // Update navigation buttons
-            updateNavigation();
-        }
-
-        // Update navigation buttons
-        function updateNavigation() {
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
-            
-            if (currentIndex > 0) {
-                prevBtn.href = `?id=${certificates[currentIndex - 1].id}`;
-                prevBtn.style.display = 'flex';
-            } else {
-                prevBtn.style.display = 'none';
-            }
-            
-            if (currentIndex < certificates.length - 1) {
-                nextBtn.href = `?id=${certificates[currentIndex + 1].id}`;
-                nextBtn.style.display = 'flex';
-            } else {
-                nextBtn.style.display = 'none';
-            }
-        }
 
-        // Navigation event handlers
-        document.getElementById('prevBtn')?.addEventListener('click', function(e) {
-            if (currentIndex > 0) {
-                currentIndex--;
-                loadCertificate(currentIndex);
+            function loadCertificate(index) {
+                const cert = certificates[index];
+                
+                viewer.innerHTML = `
+                    <div class="certificate-header">
+                        <h1>${cert.title}</h1>
+                        <h2>${cert.issuer}</h2>
+                        <div class="certificate-meta">
+                            <div class="meta-item"><i class="fas fa-calendar-alt"></i><span>Issued: ${cert.date}</span></div>
+                            <div class="meta-item"><i class="fas fa-id-card"></i><span>ID: CERT-${cert.id.toString().padStart(3, '0')}</span></div>
+                        </div>
+                    </div>
+                    <div class="certificate-image-container">
+                        <img src="${cert.image}" alt="${cert.title}" class="certificate-image" loading="lazy">
+                    </div>
+                    <div class="certificate-details">
+                        <h3>Certificate Details</h3>
+                        <p>${cert.description}</p>
+                        <h3 style="margin-top:30px">Skills Covered</h3>
+                        <div class="skills-list">${cert.skills.map(s => `<div class="skill-item">${s}</div>`).join('')}</div>
+                    </div>
+                    <div class="certificate-actions-full">
+                        ${cert.pdfUrl !== '#' ? `<a href="${cert.pdfUrl}" download class="secondary"><i class="fas fa-download"></i> Download</a>` : ''}
+                        ${cert.verifyUrl !== '#' ? `<a href="${cert.verifyUrl}" target="_blank" rel="noopener" class="secondary"><i class="fas fa-external-link-alt"></i> Verify</a>` : ''}
+                        <a href="index.html#contact" class="secondary"><i class="fas fa-envelope"></i> Contact</a>
+                    </div>
+                `;
+                
+                history.replaceState(null, '', `?id=${cert.id}`);
+                document.title = `${cert.title} | Idowu Daniel`;
+                
+                // Update navigation
+                prevBtn.style.display = index > 0 ? 'flex' : 'none';
+                nextBtn.style.display = index < certificates.length - 1 ? 'flex' : 'none';
+            }
+
+            // Navigation handlers
+            prevBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-            }
-        });
+                if (currentIndex > 0) loadCertificate(--currentIndex);
+            });
 
-        document.getElementById('nextBtn')?.addEventListener('click', function(e) {
-            if (currentIndex < certificates.length - 1) {
-                currentIndex++;
-                loadCertificate(currentIndex);
+            nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-            }
-        });
+                if (currentIndex < certificates.length - 1) loadCertificate(++currentIndex);
+            });
 
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                currentIndex--;
-                loadCertificate(currentIndex);
-            } else if (e.key === 'ArrowRight' && currentIndex < certificates.length - 1) {
-                currentIndex++;
-                loadCertificate(currentIndex);
-            } else if (e.key === 'Escape') {
-                window.location.href = 'index.html#certificates';
-            }
-        });
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft' && currentIndex > 0) loadCertificate(--currentIndex);
+                else if (e.key === 'ArrowRight' && currentIndex < certificates.length - 1) loadCertificate(++currentIndex);
+                else if (e.key === 'Escape') window.location.href = 'index.html#certificates';
+            });
 
-        // Initial load
-        loadCertificate(currentIndex);
-
-        // Update page title
-        document.title = `${certificates[currentIndex].title} | Idowu Daniel`;
+            // Initial load
+            loadCertificate(currentIndex);
+        })();
     </script>
 </body>
 </html>
