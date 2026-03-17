@@ -1,401 +1,202 @@
-// Typed.js animation for the home screen text
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Typed.js
-  if (document.querySelector('.text')) {
-    new Typed(".text", {
-      strings: ["Frontend Developer", "Web Developer", "UI Enthusiast", "React Developer"],
-      typeSpeed: 80,
-      backSpeed: 60,
-      backDelay: 1500,
-      loop: true,
-      showCursor: true,
-      cursorChar: '|'
-    });
-  }
 
+const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  
   // Mobile menu toggle
   const mobileMenu = document.getElementById('mobile-menu');
   const navbar = document.querySelector('.navbar');
   
-  if (mobileMenu) {
-    mobileMenu.addEventListener('click', function(e) {
+  if (mobileMenu && navbar) {
+    mobileMenu.addEventListener('click', (e) => {
       e.stopPropagation();
       navbar.classList.toggle('active');
       mobileMenu.classList.toggle('active');
-      document.body.classList.toggle('menu-open');
     });
     
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('.navbar a');
-    navLinks.forEach(link => {
+    // Close menu on link click
+    document.querySelectorAll('.navbar a').forEach(link => {
       link.addEventListener('click', () => {
         navbar.classList.remove('active');
         mobileMenu.classList.remove('active');
-        document.body.classList.remove('menu-open');
       });
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!navbar.contains(e.target) && !mobileMenu.contains(e.target) && navbar.classList.contains('active')) {
-        navbar.classList.remove('active');
-        mobileMenu.classList.remove('active');
-        document.body.classList.remove('menu-open');
-      }
     });
   }
 
-  // Active link switching on scroll with Intersection Observer
+  // Intersection Observer for active nav links
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('.navbar a');
   
-  const observerOptions = {
-    root: null,
-    rootMargin: '-100px 0px -70% 0px',
-    threshold: 0
-  };
+  if (sections.length && navLinks.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const currentId = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentId}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { rootMargin: '-100px 0px -70% 0px', threshold: 0 });
 
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const currentId = entry.target.getAttribute('id');
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${currentId}`) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }, observerOptions);
+    sections.forEach(section => observer.observe(section));
+  }
 
-  sections.forEach(section => {
-    sectionObserver.observe(section);
-  });
-
-  // Smooth scroll for anchor links with offset
+  // Smooth scroll with RAF optimization
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
-      
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
       
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
-        const headerOffset = 80;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
+        const offset = targetElement.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
       }
     });
   });
 
-  // Lazy loading images
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          if (img.dataset.src) {
-            img.src = img.dataset.src;
-            img.classList.add('loaded');
-          }
-          observer.unobserve(img);
-        }
-      });
-    }, {
-      rootMargin: '50px'
-    });
-    
-    document.querySelectorAll('img[data-src]').forEach(img => {
-      imageObserver.observe(img);
-    });
+  // Lazy load Typed.js
+  if (document.querySelector('.text')) {
+    const loadTyped = () => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js';
+      script.onload = () => {
+        new Typed(".text", {
+          strings: ["Frontend Developer", "Web Developer", "React Developer"],
+          typeSpeed: 60,
+          backSpeed: 40,
+          backDelay: 2000,
+          loop: true,
+          showCursor: false
+        });
+      };
+      document.body.appendChild(script);
+    };
+
+    // Load after page render
+    if (requestIdleCallback) {
+      requestIdleCallback(loadTyped);
+    } else {
+      setTimeout(loadTyped, 1000);
+    }
   }
 
-  // Add current year to footer
-  const yearElements = document.querySelectorAll('.current-year');
-  yearElements.forEach(el => {
-    el.textContent = new Date().getFullYear();
-  });
-
-  // Initialize skill bars animation on scroll
-  const skillBars = document.querySelectorAll('.progress-line span');
-  const radialBars = document.querySelectorAll('.radial-bars');
-
-  const animateSkills = () => {
-    skillBars.forEach(bar => {
-      const barPosition = bar.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.3;
-      
-      if (barPosition < screenPosition) {
-        bar.style.animation = 'fillSkillBar 1.5s ease-in-out forwards';
-      }
-    });
-
-    radialBars.forEach(bar => {
-      const barPosition = bar.getBoundingClientRect().top;
-      const screenPosition = window.innerHeight / 1.3;
-      
-      if (barPosition < screenPosition) {
-        bar.style.animation = 'fillRadialBar 1.5s ease-out forwards';
-      }
-    });
-  };
-
-  window.addEventListener('scroll', animateSkills);
-  animateSkills(); // Run once on load
-
-  // Add page transition animation
-  document.body.classList.add('fade-in');
-});
-
-// Web3Forms Contact Form Handling
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const btnText = submitBtn.querySelector('.btn-text');
-        const loading = submitBtn.querySelector('.loading');
-        const result = document.getElementById('result');
-        
-        // Show loading state
-        btnText.style.display = 'none';
-        loading.style.display = 'inline-block';
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
-        result.style.display = 'none';
-        
-        // Get form data
-        const formData = new FormData(this);
-        
-        // Add timestamp
-        formData.append('timestamp', new Date().toISOString());
-        
-        try {
-            const response = await fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                result.innerHTML = `
-                    <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; border-left: 4px solid #28a745;">
-                        <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
-                        Thank you! Your message has been sent successfully. I'll get back to you soon.
-                    </div>
-                `;
-                contactForm.reset();
-                
-                // Track form submission
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submission', {
-                        'event_category': 'contact',
-                        'event_label': 'contact_form'
-                    });
-                }
-            } else {
-                throw new Error(data.message || 'Form submission failed');
-            }
-        } catch (error) {
-            result.innerHTML = `
-                <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 10px; border-left: 4px solid #dc3545;">
-                    <i class="fas fa-exclamation-circle" style="margin-right: 10px;"></i>
-                    Error: ${error.message}. Please try again or email me directly at idowuisdaniel1@gmail.com
-                </div>
-            `;
-            console.error('Form error:', error);
-        } finally {
-            // Reset button state
-            btnText.style.display = 'inline-block';
-            loading.style.display = 'none';
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = '1';
-            result.style.display = 'block';
-            
-            // Auto-hide success message after 10 seconds
-            if (result.innerHTML.includes('successfully')) {
-                setTimeout(() => {
-                    result.style.transition = 'opacity 0.5s';
-                    result.style.opacity = '0';
-                    setTimeout(() => {
-                        result.style.display = 'none';
-                        result.style.opacity = '1';
-                    }, 500);
-                }, 10000);
-            }
+  // Intersection Observer for skill bars
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target.classList.contains('progress-line')) {
+          const span = entry.target.querySelector('span');
+          if (span) {
+            const percentage = span.parentElement?.parentElement?.classList.contains('html') ? 90 :
+                              span.parentElement?.parentElement?.classList.contains('css') ? 85 :
+                              span.parentElement?.parentElement?.classList.contains('javascript') ? 80 : 75;
+            span.style.width = `${percentage}%`;
+          }
+        } else if (entry.target.classList.contains('radial-bars')) {
+          const val = entry.target.style.getPropertyValue('--val') || 85;
+          entry.target.style.background = `conic-gradient(#00b4d8 ${val * 3.6}deg, rgba(0, 0, 0, 0.3) 0deg)`;
         }
+        skillObserver.unobserve(entry.target);
+      }
     });
-}
+  }, { threshold: 0.3, rootMargin: '50px' });
 
-// Performance optimization
-window.addEventListener('load', function() {
-  // Preload critical resources
-  const criticalResources = [
-    { rel: 'preload', as: 'style', href: 'style.css' }
-  ];
+  document.querySelectorAll('.progress-line, .radial-bars').forEach(el => skillObserver.observe(el));
 
-  criticalResources.forEach(resource => {
-    const link = document.createElement('link');
-    link.rel = resource.rel;
-    link.as = resource.as;
-    link.href = resource.href;
-    document.head.appendChild(link);
-  });
+  // Scroll to top button
+  const scrollBtn = document.createElement('button');
+  scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+  scrollBtn.className = 'scroll-top-btn';
+  scrollBtn.setAttribute('aria-label', 'Scroll to top');
+  document.body.appendChild(scrollBtn);
 
-  // Load non-critical CSS after page load
-  setTimeout(() => {
-    const nonCriticalCSS = [
-      'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
-    ];
-    
-    nonCriticalCSS.forEach(url => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = url;
-      document.head.appendChild(link);
-    });
+  const toggleScrollBtn = debounce(() => {
+    scrollBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
   }, 100);
 
-  // Add scroll to top button functionality
-  const scrollTopBtn = document.createElement('button');
-  scrollTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-  scrollTopBtn.className = 'scroll-top-btn';
-  scrollTopBtn.style.cssText = `
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #0984e3;
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3);
-    z-index: 99;
-    transition: all 0.3s ease;
-  `;
-
-  scrollTopBtn.addEventListener('mouseenter', () => {
-    scrollTopBtn.style.transform = 'translateY(-5px)';
-    scrollTopBtn.style.boxShadow = '0 10px 25px rgba(9, 132, 227, 0.4)';
-  });
-
-  scrollTopBtn.addEventListener('mouseleave', () => {
-    scrollTopBtn.style.transform = 'translateY(0)';
-    scrollTopBtn.style.boxShadow = '0 5px 15px rgba(9, 132, 227, 0.3)';
-  });
-
-  scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-
-  document.body.appendChild(scrollTopBtn);
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 500) {
-      scrollTopBtn.style.display = 'flex';
-    } else {
-      scrollTopBtn.style.display = 'none';
-    }
-  });
-});
-
-// Service Worker for offline support (optional)
-if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(error => {
-      console.log('Service Worker registration failed:', error);
-    });
-  });
-}
-
-// Add page visibility change handling
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') {
-    document.title = 'Idowu Daniel - Portfolio';
-  }
-});
-
-// Add error tracking
-window.addEventListener('error', (e) => {
-  console.error('Page error:', e.error);
-  // You could send this to an error tracking service
-});
-
-// Add performance monitoring
-if ('performance' in window) {
-  window.addEventListener('load', () => {
-    const timing = performance.timing;
-    const pageLoadTime = timing.loadEventEnd - timing.navigationStart;
-    console.log(`Page loaded in ${pageLoadTime}ms`);
-    
-    // You could send this to analytics
-    if (pageLoadTime > 3000 && typeof gtag !== 'undefined') {
-      gtag('event', 'slow_page_load', {
-        'event_category': 'performance',
-        'event_label': 'page_load',
-        'value': pageLoadTime
-      });
-    }
-  });
-}
-
-// Add keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-  // Press '?' to show help
-  if (e.key === '?' && !e.ctrlKey && !e.altKey && !e.metaKey) {
-    e.preventDefault();
-    alert(`
-      Keyboard Shortcuts:
-      • Home: Press 'H'
-      • About: Press 'A'
-      • Skills: Press 'S'
-      • Projects: Press 'P'
-      • Contact: Press 'C'
-      • Scroll to top: Press 'T'
-    `);
-  }
-
-  // Single letter navigation
-  const shortcuts = {
-    'h': '#home',
-    'a': '#about',
-    's': '#skills',
-    'p': '#projects',
-    'c': '#contact'
-  };
-
-  if (shortcuts[e.key.toLowerCase()] && !e.ctrlKey && !e.altKey && !e.metaKey) {
-    e.preventDefault();
-    const target = document.querySelector(shortcuts[e.key.toLowerCase()]);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  // Press 'T' to scroll to top
-  if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.altKey && !e.metaKey) {
-    e.preventDefault();
+  window.addEventListener('scroll', toggleScrollBtn, { passive: true });
+  
+  scrollBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  });
 });
+
+// Optimized Contact Form
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const loading = submitBtn.querySelector('.loading');
+    const result = document.getElementById('result');
+    
+    // Show loading
+    btnText.style.display = 'none';
+    if (loading) loading.style.display = 'inline-block';
+    submitBtn.disabled = true;
+    
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        result.innerHTML = '<div class="success-message">✓ Message sent successfully!</div>';
+        contactForm.reset();
+        setTimeout(() => { result.innerHTML = ''; }, 5000);
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      result.innerHTML = '<div class="error-message">✗ Error sending message</div>';
+    } finally {
+      btnText.style.display = 'inline-block';
+      if (loading) loading.style.display = 'none';
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+// Add CSS for messages
+const style = document.createElement('style');
+style.textContent = `
+  .success-message, .error-message {
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+  }
+  .success-message {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px solid #28a745;
+  }
+  .error-message {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+document.head.appendChild(style);
